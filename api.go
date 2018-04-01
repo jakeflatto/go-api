@@ -83,8 +83,10 @@ func GetValuesForTicker(ticker string) (string, map[string]map[string]float64) {
 									dailyValues = append(dailyValues, values)
 							} 
 						}
-						if column, ok := i.(string); ok {
-							columnNames = append(columnNames, column)
+						if k == "column_names" {
+							if column, ok := i.(string); ok {
+								columnNames = append(columnNames, column)
+							}
 						}
 					}
 			}
@@ -102,8 +104,10 @@ func GetValuesForTicker(ticker string) (string, map[string]map[string]float64) {
 func main() {
 	var successList []string
 	tickerList := GetTickerList()
+	numTickers := len(tickerList)
+	fmt.Println(numTickers, "tickers found. Starting search on Quandl.")
 	successCount := 0
-	for i:=0;(i<len(tickerList) && successCount <2) ;i++ {
+	for i:=0;(i<numTickers && successCount <5) ;i++ {
 		if tickerName, tickerValues:=GetValuesForTicker(tickerList[i]) ; tickerName!="" {
 			successList = append(successList, tickerName)
 			successCount++
